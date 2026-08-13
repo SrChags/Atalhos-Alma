@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atalhos - Sistema Movimente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        /* Estilização Exclusiva para Impressão em Folha Única */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0.8cm;
+            }
+            .no-print, .no-print * {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: #0f172a !important;
+                font-size: 10px !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .print-category-block {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header Principal da Tela (Oculto ao Imprimir) -->
+    <header class="bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white shadow-xl sticky top-0 z-40 no-print border-b border-purple-800/40">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center gap-3.5">
+                <!-- Box com Fundo Claro/Branco para destacar a Logo -->
+                <div class="w-12 h-12 bg-white p-2 rounded-2xl shadow-lg shadow-black/20 border-2 border-purple-100 flex items-center justify-center shrink-0 transition-transform hover:scale-105">
+                    <svg viewBox="0 0 100 120" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="movimenteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#9333ea" />
+                                <stop offset="50%" stop-color="#6b21a8" />
+                                <stop offset="100%" stop-color="#3b0764" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 50 15 L 75 28 L 50 41 L 25 28 Z" fill="url(#movimenteGrad)" />
+                        <path d="M 5 25 L 45 48 L 45 61 L 20 46 L 20 78 L 5 69 Z" fill="url(#movimenteGrad)" />
+                        <path d="M 95 25 L 55 48 L 55 61 L 80 46 L 80 78 L 95 69 Z" fill="url(#movimenteGrad)" />
+                        <path d="M 45 61 L 50 64 L 50 82 L 20 100 L 5 91 L 30 76 L 30 52 L 45 61 Z" fill="url(#movimenteGrad)" />
+                        <path d="M 55 61 L 50 64 L 50 82 L 80 100 L 95 91 L 70 76 L 70 52 L 55 61 Z" fill="url(#movimenteGrad)" />
+                    </svg>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-black tracking-tight text-white">Sistema Movimente</h1>
+                        <span class="text-[10px] bg-purple-500/25 text-purple-200 border border-purple-400/30 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Painel</span>
+                    </div>
+                    <p class="text-xs text-purple-200 font-medium">Guia Rápido de Atalhos Operacionais</p>
+                </div>
+            </div>
+
+            <!-- Busca e Ações Rápidas -->
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <div class="relative flex-1 md:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-purple-300 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar atalho ou nome..." 
+                        class="w-full pl-9 pr-4 py-2 bg-white/10 text-white placeholder-purple-200 text-sm rounded-xl border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
+                </div>
+
+                <!-- Botão Adicionar Atalho -->
+                <button onclick="openShortcutModal()" class="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 shrink-0 border border-purple-400/30">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Novo Atalho</span>
+                </button>
+
+                <!-- Botão Imprimir -->
+                <button onclick="window.print()" class="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl border border-white/20 transition flex items-center gap-1.5 shrink-0">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Imprimir</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Estrutura Exclusiva de Impressão (Visível Apenas no Impresso/PDF) -->
+    <div class="hidden print:block text-slate-900 w-full">
+        <!-- Topo de Impressão -->
+        <div class="border-b-2 border-purple-900 pb-2 mb-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white border border-slate-300 rounded-lg p-1 shrink-0">
+                    <svg viewBox="0 0 100 120" class="w-full h-full">
+                        <path d="M 50 15 L 75 28 L 50 41 L 25 28 Z" fill="#6b21a8" />
+                        <path d="M 5 25 L 45 48 L 45 61 L 20 46 L 20 78 L 5 69 Z" fill="#6b21a8" />
+                        <path d="M 95 25 L 55 48 L 55 61 L 80 46 L 80 78 L 95 69 Z" fill="#6b21a8" />
+                        <path d="M 45 61 L 50 64 L 50 82 L 20 100 L 5 91 L 30 76 L 30 52 L 45 61 Z" fill="#6b21a8" />
+                        <path d="M 55 61 L 50 64 L 50 82 L 80 100 L 95 91 L 70 76 L 70 52 L 55 61 Z" fill="#6b21a8" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-base font-black text-slate-900 leading-none">GUIA DE ATALHOS — SISTEMA MOVIMENTE</h1>
+                    <p class="text-[10px] text-slate-600 mt-0.5">Documento de Apoio e Consulta Operacional Rápida</p>
+                </div>
+            </div>
+            <div class="text-right text-[9px] text-slate-500">
+                <p>Impresso em: <span class="printDate"></span></p>
+            </div>
+        </div>
+
+        <!-- Faixa Compacta: CNPJs e Lembretes -->
+        <div class="grid grid-cols-3 gap-2 text-[10px] mb-3">
+            <div class="border border-purple-300 bg-purple-50/50 p-2 rounded-lg">
+                <p class="font-extrabold text-purple-900 mb-0.5 uppercase tracking-wide text-[9px]">🏢 CNPJs de Apoio</p>
+                <div id="printCnpjList" class="space-y-0.5 font-medium"></div>
+            </div>
+            <div class="border border-amber-300 bg-amber-50/50 p-2 rounded-lg">
+                <p class="font-extrabold text-amber-900 mb-0.5 uppercase tracking-wide text-[9px]">📦 Rastreio de NF</p>
+                <p class="text-slate-800 leading-tight">Entrar em contato com a <strong>base de origem</strong> (base emissora).</p>
+            </div>
+            <div class="border border-rose-300 bg-rose-50/50 p-2 rounded-lg">
+                <p class="font-extrabold text-rose-900 mb-0.5 uppercase tracking-wide text-[9px]">⚠️ Insucesso na Entrega</p>
+                <p class="text-slate-800 leading-tight">Não entregou no destino? <strong>Abrir ocorrência no CAM</strong>.</p>
+            </div>
+        </div>
+
+        <!-- Grade de Categorias Agrupadas (2 Colunas Compactas) -->
+        <div id="printCategoryGrid" class="grid grid-cols-2 gap-2 text.xs">
+            <!-- Gerado via JS por categorias -->
+        </div>
+    </div>
+
+    <!-- Conteúdo da Tela Interativa (Oculto no Impresso) -->
+    <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1 w-full no-print">
+
+        <!-- Lembretes de Procedimento e CNPJs de Apoio -->
+        <section class="grid md:grid-cols-3 gap-4">
+            
+            <!-- Rastreio -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm flex items-start gap-3">
+                <div class="bg-amber-100 p-2.5 rounded-lg text-amber-700 shrink-0">
+                    <i class="fa-solid fa-route text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-amber-900 text-sm">Rastreio de Nota Fiscal (NF)</h3>
+                    <p class="text-xs text-amber-800 mt-1 leading-relaxed">Entrar em contato diretamente com a <strong>base de origem</strong> (base emissora).</p>
+                </div>
+            </div>
+
+            <!-- Insucesso -->
+            <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-xl shadow-sm flex items-start gap-3">
+                <div class="bg-rose-100 p-2.5 rounded-lg text-rose-700 shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-rose-900 text-sm">Insucesso na Entrega</h3>
+                    <p class="text-xs text-rose-800 mt-1 leading-relaxed">Se não conseguiu entregar no destino, <strong>abrir ocorrência no CAM</strong>.</p>
+                </div>
+            </div>
+
+            <!-- CNPJs de Apoio Dinâmicos -->
+            <div class="bg-purple-50 border-l-4 border-purple-600 p-4 rounded-xl shadow-sm flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-building text-purple-700 text-sm"></i>
+                        <h3 class="font-bold text-purple-950 text-sm">CNPJs de Apoio</h3>
+                    </div>
+                    <button onclick="openCnpjModal()" class="text-[11px] bg-purple-700 hover:bg-purple-800 text-white font-semibold px-2 py-0.5 rounded transition flex items-center gap-1">
+                        <i class="fa-solid fa-plus text-[9px]"></i> Add
+                    </button>
+                </div>
+                
+                <div id="cnpjList" class="space-y-1.5 text-xs">
+                    <!-- Gerado Dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros Rápidos -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div class="flex flex-wrap gap-2" id="filterCategory">
+                <button data-cat="all" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-700 text-white transition">Todos os Atalhos</button>
+                <button data-cat="Cadastros" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Cadastros</button>
+                <button data-cat="Cotações & Coletas" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Cotações & Coletas</button>
+                <button data-cat="Minutas & Lotes" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Minutas & Lotes</button>
+                <button data-cat="Manifestos & Transf." class="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Manifestos & Transf.</button>
+                <button data-cat="Notas Fiscais" class="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition">Notas Fiscais</button>
+            </div>
+            <div class="text-xs text-slate-500">
+                Total: <span id="itemCount" class="font-bold text-purple-900">15</span> atalhos
+            </div>
+        </div>
+
+        <!-- Grade de Atalhos -->
+        <div id="shortcutsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Inserido dinamicamente via JS -->
+        </div>
+
+        <!-- Mensagem de Sem Resultados -->
+        <div id="noResults" class="hidden text-center py-12">
+            <i class="fa-solid fa-magnifying-glass text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-500 text-sm">Nenhum atalho encontrado com os termos pesquisados.</p>
+        </div>
+
+    </main>
+
+    <!-- Modal: Adicionar ou Editar Atalho -->
+    <div id="shortcutModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="shortcutModalTitle" class="font-bold text-slate-800 text-base flex items-center gap-2">
+                    <i id="shortcutModalIcon" class="fa-solid fa-plus-circle text-purple-600"></i>
+                    <span>Cadastrar Novo Atalho</span>
+                </h3>
+                <button onclick="closeShortcutModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="shortcutForm" onsubmit="handleAddShortcut(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Código do Atalho *</label>
+                    <input type="text" id="newCode" placeholder="Ex: 88, 301..." required 
+                        class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nome da Função / Ação *</label>
+                    <input type="text" id="newName" placeholder="Ex: Consultar Tabela de Frete..." required 
+                        class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Categoria *</label>
+                    <select id="newCategory" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
+                        <option value="Cadastros">Cadastros</option>
+                        <option value="Cotações & Coletas">Cotações & Coletas</option>
+                        <option value="Minutas & Lotes">Minutas & Lotes</option>
+                        <option value="Manifestos & Transf.">Manifestos & Transf.</option>
+                        <option value="Notas Fiscais">Notas Fiscais</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Observação (Opcional)</label>
+                    <input type="text" id="newNote" placeholder="Ex: Preencher chave da NFe..." 
+                        class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeShortcutModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
+                    <button type="submit" id="shortcutSubmitBtn" class="px-4 py-2 text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 rounded-lg shadow">Salvar Atalho</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Adicionar ou Editar CNPJ -->
+    <div id="cnpjModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="cnpjModalTitle" class="font-bold text-slate-800 text-base flex items-center gap-2">
+                    <i id="cnpjModalIcon" class="fa-solid fa-building-circle-check text-purple-600"></i>
+                    <span>Cadastrar CNPJ de Apoio</span>
+                </h3>
+                <button onclick="closeCnpjModal()" class="text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="cnpjForm" onsubmit="handleAddCnpj(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nome / Sigla da Base *</label>
+                    <input type="text" id="newCnpjName" placeholder="Ex: Filial SP, Matriz..." required 
+                        class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Número do CNPJ *</label>
+                    <input type="text" id="newCnpjNumber" placeholder="Ex: 00.000.000/0001-00" required 
+                        class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeCnpjModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
+                    <button type="submit" id="cnpjSubmitBtn" class="px-4 py-2 text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 rounded-lg shadow">Adicionar CNPJ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notificação Flutuante (Toast) -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-lg shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2 z-50 no-print">
+        <i class="fa-solid fa-circle-check text-purple-400"></i>
+        <span id="toastMessage">Texto copiado!</span>
+    </div>
+
+    <script>
+        // Dados Iniciais
+        let shortcuts = [
+            { code: "01", name: "Emissão de Minuta", category: "Minutas & Lotes", icon: "fa-file-invoice", note: null },
+            { code: "14", name: "Inserir Cadastro", category: "Cadastros", icon: "fa-user-plus", note: null },
+            { code: "15", name: "Ver Cadastro / Atualizar", category: "Cadastros", icon: "fa-address-card", note: null },
+            { code: "26", name: "Criar Cotação", category: "Cotações & Coletas", icon: "fa-calculator", note: null },
+            { code: "27", name: "Consultar Cotação", category: "Cotações & Coletas", icon: "fa-file-circle-check", note: null },
+            { code: "106", name: "Consultar Emissões NF", category: "Notas Fiscais", icon: "fa-receipt", note: null },
+            { code: "126", name: "Consultar Minuta", category: "Minutas & Lotes", icon: "fa-file-lines", note: null },
+            { code: "128", name: "Ocorrência de Lote", category: "Minutas & Lotes", icon: "fa-boxes-packing", note: null },
+            { code: "137", name: "Emitir Ordem de Coleta", category: "Cotações & Coletas", icon: "fa-truck-ramp-box", note: "Colocar número da cotação" },
+            { code: "138", name: "Consultar Coleta", category: "Cotações & Coletas", icon: "fa-dolly", note: null },
+            { code: "166", name: "Picking Manifesto", category: "Manifestos & Transf.", icon: "fa-clipboard-check", note: null },
+            { code: "186", name: "Manifestar Agente", category: "Manifestos & Transf.", icon: "fa-user-gear", note: null },
+            { code: "232", name: "Criação Lote Pré Minuta", category: "Minutas & Lotes", icon: "fa-box-archive", note: null },
+            { code: "241", name: "Consultar / Manifestar Transferência", category: "Manifestos & Transf.", icon: "fa-right-left", note: null },
+            { code: "262", name: "Duplicar Minuta", category: "Minutas & Lotes", icon: "fa-copy", note: null }
+        ];
+
+        let cnpjs = [
+            { label: "Alma", raw: "61594286000175", formatted: "61.594.286/0001-75" },
+            { label: "MVT", raw: "28663998000204", formatted: "28.663.998/0002-04" }
+        ];
+
+        let currentCategory = 'all';
+        let searchQuery = '';
+        let editingIndex = null;
+        let editingCnpjIndex = null;
+
+        function getCategoryBadgeClass(category) {
+            switch(category) {
+                case 'Cadastros': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                case 'Cotações & Coletas': return 'bg-purple-100 text-purple-800 border-purple-200';
+                case 'Minutas & Lotes': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+                case 'Manifestos & Transf.': return 'bg-sky-100 text-sky-800 border-sky-200';
+                case 'Notas Fiscais': return 'bg-amber-100 text-amber-800 border-amber-200';
+                default: return 'bg-slate-100 text-slate-800 border-slate-200';
+            }
+        }
+
+        // Renderização para a Tela
+        function renderShortcuts() {
+            const grid = document.getElementById('shortcutsGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            const filtered = shortcuts.filter(item => {
+                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      (item.note && item.note.toLowerCase().includes(searchQuery.toLowerCase()));
+                return matchesCategory && matchesSearch;
+            });
+
+            document.getElementById('itemCount').innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            filtered.forEach((item) => {
+                const originalIndex = shortcuts.indexOf(item);
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl p-4 shadow-sm border border-slate-200/80 hover:shadow-md transition flex flex-col justify-between group relative";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-lg font-extrabold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100 group-hover:bg-purple-700 group-hover:text-white transition-colors duration-200">
+                                ${item.code}
+                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full border ${getCategoryBadgeClass(item.category)}">
+                                    ${item.category}
+                                </span>
+                                <button onclick="openShortcutModal(${originalIndex})" title="Editar atalho" class="text-slate-300 hover:text-purple-600 text-xs p-1 transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button onclick="deleteShortcut(${originalIndex})" title="Remover atalho" class="text-slate-300 hover:text-rose-500 text-xs p-1 transition">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid ${item.icon || 'fa-list-check'} text-slate-400 mt-1 text-sm"></i>
+                            <h4 class="font-semibold text-slate-800 text-sm leading-snug">${item.name}</h4>
+                        </div>
+                    </div>
+                    ${item.note ? `
+                        <div class="mt-3 pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info text-purple-600"></i>
+                            <span>${item.note}</span>
+                        </div>
+                    ` : ''}
+                `;
+                grid.appendChild(card);
+            });
+
+            // Atualiza também a versão de impressão
+            renderPrintView();
+        }
+
+        // Renderização Exclusiva de Impressão (Agrupado por Categorias e Compacto)
+        function renderPrintView() {
+            // 1. Preenche CNPJs na impressão
+            const printCnpjList = document.getElementById('printCnpjList');
+            if (printCnpjList) {
+                printCnpjList.innerHTML = cnpjs.map(c => `<div><strong>${c.label}:</strong> ${c.formatted}</div>`).join('');
+            }
+
+            // 2. Agrupa Atalhos por Categoria
+            const printCategoryGrid = document.getElementById('printCategoryGrid');
+            if (!printCategoryGrid) return;
+            printCategoryGrid.innerHTML = '';
+
+            // Categorias em ordem lógica
+            const categoriesOrder = ["Cadastros", "Cotações & Coletas", "Minutas & Lotes", "Manifestos & Transf.", "Notas Fiscais", "Outros"];
+            
+            categoriesOrder.forEach(cat => {
+                const catShortcuts = shortcuts.filter(s => s.category === cat);
+                if (catShortcuts.length === 0) return;
+
+                const block = document.createElement('div');
+                block.className = 'border border-slate-300 rounded-lg p-2 bg-white print-category-block';
+
+                const itemsHtml = catShortcuts.map(s => `
+                    <tr class="border-b border-slate-100 last:border-0">
+                        <td class="font-black text-purple-900 pr-2 py-0.5 whitespace-nowrap text-[11px] w-8">${s.code}</td>
+                        <td class="py-0.5 text-[10px] text-slate-800 font-semibold leading-tight">
+                            ${s.name} ${s.note ? `<span class="text-slate-500 font-normal">(${s.note})</span>` : ''}
+                        </td>
+                    </tr>
+                `).join('');
+
+                block.innerHTML = `
+                    <div class="font-bold text-slate-900 border-b border-slate-200 pb-1 mb-1 text-[10px] uppercase tracking-wider flex items-center justify-between">
+                        <span>${cat}</span>
+                        <span class="text-[9px] font-medium text-slate-500">(${catShortcuts.length})</span>
+                    </div>
+                    <table class="w-full text-left">
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+                `;
+                printCategoryGrid.appendChild(block);
+            });
+        }
+
+        // Renderizar CNPJs na Tela
+        function renderCnpjs() {
+            const list = document.getElementById('cnpjList');
+            list.innerHTML = '';
+
+            cnpjs.forEach((cnpj, index) => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between bg-white/80 p-1.5 rounded border border-purple-100";
+                row.innerHTML = `
+                    <span class="text-slate-600 font-medium truncate pr-2">
+                        <strong>${cnpj.label}:</strong> ${cnpj.formatted}
+                    </span>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="copyToClipboard('${cnpj.raw}', 'CNPJ ${cnpj.label}')" class="text-purple-700 hover:text-purple-900 text-xs px-2 py-0.5 rounded bg-purple-50 hover:bg-purple-100 font-medium transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> Copiar
+                        </button>
+                        <button onclick="openCnpjModal(${index})" title="Editar CNPJ" class="text-slate-300 hover:text-purple-600 text-xs p-1 transition">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteCnpj(${index})" title="Remover CNPJ" class="text-slate-300 hover:text-rose-500 text-xs p-1 transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            renderPrintView();
+        }
+
+        // Adicionar ou Editar Atalho
+        function handleAddShortcut(e) {
+            e.preventDefault();
+            const code = document.getElementById('newCode').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            const category = document.getElementById('newCategory').value;
+            const note = document.getElementById('newNote').value.trim() || null;
+
+            if (editingIndex !== null) {
+                shortcuts[editingIndex] = { ...shortcuts[editingIndex], code, name, category, note };
+                showToast(`Atalho ${code} atualizado!`);
+            } else {
+                shortcuts.unshift({ code, name, category, icon: "fa-star", note });
+                showToast(`Atalho ${code} cadastrado com sucesso!`);
+            }
+
+            renderShortcuts();
+            closeShortcutModal();
+        }
+
+        // Abrir Modal de Atalho (Novo ou Edição)
+        function openShortcutModal(index = null) {
+            editingIndex = index;
+            const modalTitle = document.getElementById('shortcutModalTitle');
+            const modalIcon = document.getElementById('shortcutModalIcon');
+            const submitBtn = document.getElementById('shortcutSubmitBtn');
+
+            if (index !== null && shortcuts[index]) {
+                const item = shortcuts[index];
+                document.getElementById('newCode').value = item.code;
+                document.getElementById('newName').value = item.name;
+                document.getElementById('newCategory').value = item.category;
+                document.getElementById('newNote').value = item.note || '';
+
+                modalTitle.querySelector('span').innerText = "Editar Atalho";
+                modalIcon.className = "fa-solid fa-pen-to-square text-purple-600";
+                submitBtn.innerText = "Salvar Alterações";
+            } else {
+                document.getElementById('shortcutForm').reset();
+                modalTitle.querySelector('span').innerText = "Cadastrar Novo Atalho";
+                modalIcon.className = "fa-solid fa-plus-circle text-purple-600";
+                submitBtn.innerText = "Salvar Atalho";
+            }
+
+            document.getElementById('shortcutModal').classList.remove('hidden');
+        }
+
+        function closeShortcutModal() { 
+            editingIndex = null;
+            document.getElementById('shortcutForm').reset();
+            document.getElementById('shortcutModal').classList.add('hidden'); 
+        }
+
+        // Remover Atalho
+        function deleteShortcut(index) {
+            shortcuts.splice(index, 1);
+            renderShortcuts();
+            showToast("Atalho removido!");
+        }
+
+        // Adicionar ou Editar CNPJ
+        function handleAddCnpj(e) {
+            e.preventDefault();
+            const label = document.getElementById('newCnpjName').value.trim();
+            const formatted = document.getElementById('newCnpjNumber').value.trim();
+            const raw = formatted.replace(/\D/g, '');
+
+            if (editingCnpjIndex !== null) {
+                cnpjs[editingCnpjIndex] = { label, raw, formatted };
+                showToast(`CNPJ ${label} atualizado!`);
+            } else {
+                cnpjs.push({ label, raw, formatted });
+                showToast(`CNPJ ${label} adicionado!`);
+            }
+
+            renderCnpjs();
+            closeCnpjModal();
+        }
+
+        // Abrir Modal de CNPJ (Novo ou Edição)
+        function openCnpjModal(index = null) {
+            editingCnpjIndex = index;
+            const modalTitle = document.getElementById('cnpjModalTitle');
+            const modalIcon = document.getElementById('cnpjModalIcon');
+            const submitBtn = document.getElementById('cnpjSubmitBtn');
+
+            if (index !== null && cnpjs[index]) {
+                const item = cnpjs[index];
+                document.getElementById('newCnpjName').value = item.label;
+                document.getElementById('newCnpjNumber').value = item.formatted;
+
+                modalTitle.querySelector('span').innerText = "Editar CNPJ de Apoio";
+                modalIcon.className = "fa-solid fa-pen-to-square text-purple-600";
+                submitBtn.innerText = "Salvar Alterações";
+            } else {
+                document.getElementById('cnpjForm').reset();
+                modalTitle.querySelector('span').innerText = "Cadastrar CNPJ de Apoio";
+                modalIcon.className = "fa-solid fa-building-circle-check text-purple-600";
+                submitBtn.innerText = "Adicionar CNPJ";
+            }
+
+            document.getElementById('cnpjModal').classList.remove('hidden');
+        }
+
+        function closeCnpjModal() {
+            editingCnpjIndex = null;
+            document.getElementById('cnpjForm').reset();
+            document.getElementById('cnpjModal').classList.add('hidden');
+        }
+
+        // Remover CNPJ
+        function deleteCnpj(index) {
+            const label = cnpjs[index]?.label || 'CNPJ';
+            cnpjs.splice(index, 1);
+            renderCnpjs();
+            showToast(`CNPJ ${label} removido!`);
+        }
+
+        // Copiar para Clipboard
+        function copyToClipboard(text, label) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast(`${label || 'Conteúdo'} copiado!`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        // Eventos dos Filtros
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderShortcuts();
+        });
+
+        document.getElementById('filterCategory').addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelectorAll('#filterCategory button').forEach(btn => {
+                    btn.className = "px-3 py-1.5 rounded-full text-xs font-medium bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition";
+                });
+                e.target.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-700 text-white transition";
+                
+                currentCategory = e.target.getAttribute('data-cat');
+                renderShortcuts();
+            }
+        });
+
+        // Configurar Data para Impressão
+        document.querySelectorAll('.printDate').forEach(el => {
+            el.innerText = new Date().toLocaleDateString('pt-BR');
+        });
+
+        // Inicialização
+        renderShortcuts();
+        renderCnpjs();
+    </script>
+</body>
+</html>
