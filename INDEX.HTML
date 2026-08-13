@@ -10,6 +10,35 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
 
+        /* Animação do Anel de Loading Roxo ao redor da Logo */
+        @keyframes spinPurple {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-loading-wrapper {
+            position: relative;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Anel Externo de Loading */
+        .logo-loading-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 1.25rem; /* Cantos bem arredondados */
+            padding: 2.5px; /* Espessura da linha do loading */
+            background: conic-gradient(from 0deg, #9333ea, #d8b4fe, #581c87, #9333ea);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: spinPurple 2.5s linear infinite;
+        }
+
         /* Estilização Exclusiva para Impressão em Folha Única */
         @media print {
             @page {
@@ -38,27 +67,17 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <!-- Header Principal da Tela (Oculto ao Imprimir) -->
     <header class="bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white shadow-xl sticky top-0 z-40 no-print border-b border-purple-800/40">
         <div class="max-w-7xl mx-auto px-4 py-3.5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             
             <div class="flex items-center gap-3.5">
-                <!-- Box com Fundo Claro/Branco para destacar a Logo -->
-                <div class="w-12 h-12 bg-white p-2 rounded-2xl shadow-lg shadow-black/20 border-2 border-purple-100 flex items-center justify-center shrink-0 transition-transform hover:scale-105">
-                    <svg viewBox="0 0 100 120" class="w-full h-full">
-                        <defs>
-                            <linearGradient id="movimenteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#9333ea" />
-                                <stop offset="50%" stop-color="#6b21a8" />
-                                <stop offset="100%" stop-color="#3b0764" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M 50 15 L 75 28 L 50 41 L 25 28 Z" fill="url(#movimenteGrad)" />
-                        <path d="M 5 25 L 45 48 L 45 61 L 20 46 L 20 78 L 5 69 Z" fill="url(#movimenteGrad)" />
-                        <path d="M 95 25 L 55 48 L 55 61 L 80 46 L 80 78 L 95 69 Z" fill="url(#movimenteGrad)" />
-                        <path d="M 45 61 L 50 64 L 50 82 L 20 100 L 5 91 L 30 76 L 30 52 L 45 61 Z" fill="url(#movimenteGrad)" />
-                        <path d="M 55 61 L 50 64 L 50 82 L 80 100 L 95 91 L 70 76 L 70 52 L 55 61 Z" fill="url(#movimenteGrad)" />
-                    </svg>
+                
+                <div class="logo-loading-wrapper transition-transform hover:scale-105">
+                    <div class="logo-loading-ring"></div>
+
+                    <div class="w-12 h-12 bg-white p-1.5 rounded-2xl shadow-lg shadow-black/20 border border-purple-100 flex items-center justify-center overflow-hidden z-10">
+                        <img src="ASSETs/logo.png" alt="Logo Movimente" class="w-full h-full object-contain">
+                    </div>
                 </div>
 
                 <div>
@@ -70,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Busca e Ações Rápidas -->
             <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
                 <div class="relative flex-1 md:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-purple-300 text-sm"></i>
@@ -78,13 +96,11 @@
                         class="w-full pl-9 pr-4 py-2 bg-white/10 text-white placeholder-purple-200 text-sm rounded-xl border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-400 transition">
                 </div>
 
-                <!-- Botão Adicionar Atalho -->
                 <button onclick="openShortcutModal()" class="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 shrink-0 border border-purple-400/30">
                     <i class="fa-solid fa-plus"></i>
                     <span>Novo Atalho</span>
                 </button>
 
-                <!-- Botão Imprimir -->
                 <button onclick="window.print()" class="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-xl border border-white/20 transition flex items-center gap-1.5 shrink-0">
                     <i class="fa-solid fa-print"></i>
                     <span>Imprimir</span>
@@ -93,19 +109,11 @@
         </div>
     </header>
 
-    <!-- Estrutura Exclusiva de Impressão (Visível Apenas no Impresso/PDF) -->
     <div class="hidden print:block text-slate-900 w-full">
-        <!-- Topo de Impressão -->
         <div class="border-b-2 border-purple-900 pb-2 mb-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white border border-slate-300 rounded-lg p-1 shrink-0">
-                    <svg viewBox="0 0 100 120" class="w-full h-full">
-                        <path d="M 50 15 L 75 28 L 50 41 L 25 28 Z" fill="#6b21a8" />
-                        <path d="M 5 25 L 45 48 L 45 61 L 20 46 L 20 78 L 5 69 Z" fill="#6b21a8" />
-                        <path d="M 95 25 L 55 48 L 55 61 L 80 46 L 80 78 L 95 69 Z" fill="#6b21a8" />
-                        <path d="M 45 61 L 50 64 L 50 82 L 20 100 L 5 91 L 30 76 L 30 52 L 45 61 Z" fill="#6b21a8" />
-                        <path d="M 55 61 L 50 64 L 50 82 L 80 100 L 95 91 L 70 76 L 70 52 L 55 61 Z" fill="#6b21a8" />
-                    </svg>
+                <div class="w-10 h-10 bg-white border border-slate-300 rounded-lg p-1 shrink-0 overflow-hidden">
+                    <img src="ASSETs/logo.png" alt="Logo Movimente" class="w-full h-full object-contain">
                 </div>
                 <div>
                     <h1 class="text-base font-black text-slate-900 leading-none">GUIA DE ATALHOS — SISTEMA MOVIMENTE</h1>
@@ -117,7 +125,6 @@
             </div>
         </div>
 
-        <!-- Faixa Compacta: CNPJs e Lembretes -->
         <div class="grid grid-cols-3 gap-2 text-[10px] mb-3">
             <div class="border border-purple-300 bg-purple-50/50 p-2 rounded-lg">
                 <p class="font-extrabold text-purple-900 mb-0.5 uppercase tracking-wide text-[9px]">🏢 CNPJs de Apoio</p>
@@ -133,19 +140,14 @@
             </div>
         </div>
 
-        <!-- Grade de Categorias Agrupadas (2 Colunas Compactas) -->
         <div id="printCategoryGrid" class="grid grid-cols-2 gap-2 text.xs">
-            <!-- Gerado via JS por categorias -->
-        </div>
+            </div>
     </div>
 
-    <!-- Conteúdo da Tela Interativa (Oculto no Impresso) -->
     <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1 w-full no-print">
 
-        <!-- Lembretes de Procedimento e CNPJs de Apoio -->
         <section class="grid md:grid-cols-3 gap-4">
             
-            <!-- Rastreio -->
             <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm flex items-start gap-3">
                 <div class="bg-amber-100 p-2.5 rounded-lg text-amber-700 shrink-0">
                     <i class="fa-solid fa-route text-lg"></i>
@@ -156,7 +158,6 @@
                 </div>
             </div>
 
-            <!-- Insucesso -->
             <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-xl shadow-sm flex items-start gap-3">
                 <div class="bg-rose-100 p-2.5 rounded-lg text-rose-700 shrink-0">
                     <i class="fa-solid fa-triangle-exclamation text-lg"></i>
@@ -167,7 +168,6 @@
                 </div>
             </div>
 
-            <!-- CNPJs de Apoio Dinâmicos -->
             <div class="bg-purple-50 border-l-4 border-purple-600 p-4 rounded-xl shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2">
@@ -180,12 +180,10 @@
                 </div>
                 
                 <div id="cnpjList" class="space-y-1.5 text-xs">
-                    <!-- Gerado Dinamicamente -->
-                </div>
+                    </div>
             </div>
         </section>
 
-        <!-- Filtros Rápidos -->
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div class="flex flex-wrap gap-2" id="filterCategory">
                 <button data-cat="all" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-700 text-white transition">Todos os Atalhos</button>
@@ -200,12 +198,9 @@
             </div>
         </div>
 
-        <!-- Grade de Atalhos -->
         <div id="shortcutsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Inserido dinamicamente via JS -->
-        </div>
+            </div>
 
-        <!-- Mensagem de Sem Resultados -->
         <div id="noResults" class="hidden text-center py-12">
             <i class="fa-solid fa-magnifying-glass text-4xl text-slate-300 mb-3"></i>
             <p class="text-slate-500 text-sm">Nenhum atalho encontrado com os termos pesquisados.</p>
@@ -213,7 +208,6 @@
 
     </main>
 
-    <!-- Modal: Adicionar ou Editar Atalho -->
     <div id="shortcutModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -260,7 +254,6 @@
         </div>
     </div>
 
-    <!-- Modal: Adicionar ou Editar CNPJ -->
     <div id="cnpjModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -291,7 +284,6 @@
         </div>
     </div>
 
-    <!-- Notificação Flutuante (Toast) -->
     <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-lg shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2 z-50 no-print">
         <i class="fa-solid fa-circle-check text-purple-400"></i>
         <span id="toastMessage">Texto copiado!</span>
